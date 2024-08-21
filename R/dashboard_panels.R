@@ -1,6 +1,3 @@
-# message("Sourcing dashboard panels")
-
-
 homepage_panel <- function() {
   tabPanel(
     "User guide and information",
@@ -101,18 +98,16 @@ dashboard_panel <- function() {
         column(
           width = 12,
           expandable(
-            inputId = "details", label = textOutput("dropdown_label"),
+            input_id = "details", label = textOutput("dropdown_label"),
             contents =
               div(
                 id = "div_a",
-                # class = "well",
-                # style = "min-height: 100%; height: 100%; overflow-y: visible",
                 gov_row(
                   column(
                     width = 6,
                     selectizeInput("selectPhase",
                       "Select a school phase",
-                      choices = choicesPhase
+                      choices = choicesphase
                     )
                   ),
                   column(
@@ -120,7 +115,7 @@ dashboard_panel <- function() {
                     selectizeInput(
                       inputId = "selectArea",
                       label = "Choose an area:",
-                      choices = choicesAreas$area_name
+                      choices = choicesareas$area_name
                     )
                   ),
                   column(
@@ -143,7 +138,7 @@ dashboard_panel <- function() {
           tabsetPanel(
             id = "tabsetpanels",
             tabPanel(
-              "Valuebox example",
+              "value_box example",
               fluidRow(
                 column(
                   width = 12,
@@ -178,7 +173,7 @@ dashboard_panel <- function() {
                 column(
                   width = 12,
                   h2("An example line chart using ggplot and ggiraph (h2)"),
-                  girafeOutput("lineRevBal", width = "100%", height = "100%")
+                  girafeOutput("linerevbal", width = "100%", height = "100%")
                 )
               )
             ),
@@ -207,7 +202,7 @@ dashboard_panel <- function() {
                           width = 12,
                           selectizeInput("selectBenchLAs",
                             "Select benchmark LAs",
-                            choices = choicesLAs$area_name,
+                            choices = choiceslas$area_name,
                             multiple = TRUE,
                             options = list(maxItems = 3)
                           )

@@ -1,7 +1,7 @@
-customDisconnectMessage <- function(refresh = "Refresh page",
-                                    links = sites_list,
-                                    publication_name = ees_pub_name,
-                                    publication_link = ees_publication) {
+custom_disconnect_message <- function(refresh = "Refresh page",
+                                      links = sites_list,
+                                      publication_name = ees_pub_name,
+                                      publication_link = ees_publication) {
   checkmate::assert_string(refresh)
   htmltools::tagList(
     htmltools::tags$script(
@@ -19,7 +19,10 @@ customDisconnectMessage <- function(refresh = "Refresh page",
       style = "display: none !important;",
       htmltools::tags$div(
         id = "ss-connect-refresh",
-        tags$p("You've lost connection to the dashboard server - please try refreshing the page:"),
+        tags$p(paste0(
+          "You've lost connection to the dashboard server - ",
+          "please try refreshing the page:"
+        )),
         tags$p(tags$a(
           id = "ss-reload-link",
           href = "#", "Refresh page",
@@ -27,7 +30,10 @@ customDisconnectMessage <- function(refresh = "Refresh page",
         )),
         if (length(links) > 1) {
           tags$p(
-            "If this persists, you can also view the dashboard at one of our mirror sites:",
+            paste0(
+              "If this persists, you can also view the dashboard at one ",
+              "of our mirror sites:"
+            ),
             tags$p(
               tags$a(href = links[1], "Site 1"),
               " - ",
@@ -60,8 +66,6 @@ customDisconnectMessage <- function(refresh = "Refresh page",
           ),
           "with details of any problems with this resource."
         )
-        #  ),
-        # htmltools::tags$p("If this persists, you can view tables and data via the ",htmltools::tags$a(href ='https://explore-education-statistics.service.gov.uk/find-statistics/pupil-attendance-in-schools', "Pupil attendance in schools")," release on Explore Education Statistics and please contact statistics.development@education.gov.uk with details of what you were trying to do.")
       )
     ),
     htmltools::tags$div(id = "ss-overlay", style = "display: none;"),

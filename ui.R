@@ -59,7 +59,6 @@
 
 ui <- function(input, output, session) {
   fluidPage(
-    # use_tota11y(),
     title = tags$head(
       tags$link(
         rel = "shortcut icon",
@@ -82,7 +81,7 @@ ui <- function(input, output, session) {
         referrer = "no-referrer"
       ),
     shinyjs::useShinyjs(),
-    customDisconnectMessage(),
+    custom_disconnect_message(),
     useShinydashboard(),
     # Setting up cookie consent based on a cookie recording the consent:
     # https://book.javascript-for-r.com/shiny-cookies.html
@@ -106,7 +105,10 @@ ui <- function(input, output, session) {
     shinyGovstyle::cookieBanner("DfE R-Shiny dashboard template"),
     shinyGovstyle::header(
       main_text = "",
-      main_link = "https://www.gov.uk/government/organisations/department-for-education",
+      main_link = paste0(
+        "https://www.gov.uk/government/organisations/",
+        "department-for-education"
+      ),
       secondary_text = "DfE Shiny Template",
       logo = "images/DfE_logo_landscape.png",
       logo_width = 150,

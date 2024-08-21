@@ -7,7 +7,6 @@
 # responsive to user input.
 #
 # ---------------------------------------------------------
-# message("Sourcing global")
 
 
 # Library calls ----------------------------------------------------------------
@@ -32,7 +31,6 @@ shhh(library(rstudioapi))
 shhh(library(bslib))
 shhh(library(dfeshiny))
 shhh(library(ggiraph))
-# shhh(library(shinya11y))
 
 # Functions --------------------------------------------------------------------
 
@@ -57,13 +55,11 @@ cs_num <- function(value) {
 # to the server file.
 # It's best to do this here instead of the server file, to improve performance.
 
-# source("R/filename.r")
-
 
 # appLoadingCSS ----------------------------------------------------------------
 # Set up loading screen
 
-appLoadingCSS <- "
+app_loading_css <- "
 #loading-content {
   position: absolute;
   background: #000000;
@@ -78,8 +74,14 @@ appLoadingCSS <- "
 "
 
 site_title <- "DfE Shiny Template"
-site_primary <- "https://department-for-education.shinyapps.io/dfe-shiny-template/"
-site_overflow <- "https://department-for-education.shinyapps.io/dfe-shiny-template-overflow/"
+site_primary <- paste0(
+  "https://department-for-education.shinyapps.io/",
+  "dfe-shiny-template/"
+)
+site_overflow <- paste0(
+  "https://department-for-education.shinyapps.io/",
+  "dfe-shiny-template-overflow/"
+)
 # We can add further mirrors where necessary. Each one can generally handle
 # about 2,500 users simultaneously
 sites_list <- c(site_primary, site_overflow)
@@ -87,16 +89,19 @@ sites_list <- c(site_primary, site_overflow)
 # publication name (e.g. the EES publication)
 ees_pub_name <- "Statistical publication"
 # Update with parent publication link
-ees_publication <- "https://explore-education-statistics.service.gov.uk/find-statistics/"
+ees_publication <- paste0(
+  "https://explore-education-statistics.service",
+  ".gov.uk/find-statistics/"
+)
 google_analytics_key <- "Z967JJVQQX"
 
 
 source("R/read_data.R")
 
 # Read in the data
-dfRevBal <- read_revenue_data()
+dfrevbal <- read_revenue_data()
 # Get geographical levels from data
-dfAreas <- dfRevBal %>%
+dfareas <- dfrevbal %>%
   select(
     geographic_level, country_name, country_code,
     region_name, region_code,
@@ -104,28 +109,28 @@ dfAreas <- dfRevBal %>%
   ) %>%
   distinct()
 
-choicesLAs <- dfAreas %>%
+choiceslas <- dfareas %>%
   filter(geographic_level == "Local authority") %>%
   select(geographic_level, area_name = la_name) %>%
   arrange(area_name)
 
-choicesAreas <- dfAreas %>%
+choicesareas <- dfareas %>%
   filter(geographic_level == "National") %>%
   select(geographic_level, area_name = country_name) %>%
   rbind(
-    dfAreas %>%
+    dfareas %>%
       filter(geographic_level == "Regional") %>%
       select(geographic_level, area_name = region_name)
   ) %>%
-  rbind(choicesLAs)
+  rbind(choiceslas)
 
-choicesYears <- unique(dfRevBal$time_period)
+choicesyears <- unique(dfrevbal$time_period)
 
-choicesPhase <- unique(dfRevBal$school_phase)
+choicesphase <- unique(dfrevbal$school_phase)
 
-expandable <- function(inputId, label, contents) {
-  govDetails <- shiny::tags$details(
-    class = "govuk-details", id = inputId,
+expandable <- function(input_id, label, contents) {
+  govdetails <- shiny::tags$details(
+    class = "govuk-details", id = input_id,
     shiny::tags$summary(
       class = "govuk-details__summary",
       shiny::tags$span(

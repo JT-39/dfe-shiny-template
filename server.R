@@ -171,21 +171,19 @@ server <- function(input, output, session) {
   })
 
 
-  #  output$cookie_status <- renderText(as.character(input$cookies))
-
   # Simple server stuff goes here ----------------------------------------------
-  reactiveRevBal <- reactive({
-    dfRevBal %>% filter(
+  reactiverevbal <- reactive({
+    dfrevbal %>% filter(
       area_name == input$selectArea | area_name == "England",
       school_phase == input$selectPhase
     )
   })
 
   # Define server logic required to draw a histogram
-  output$lineRevBal <- snapshotPreprocessOutput(
+  output$linerevbal <- snapshotPreprocessOutput(
     renderGirafe({
       girafe(
-        ggobj = createAvgRevTimeSeries(reactiveRevBal(), input$selectArea),
+        ggobj = create_avgrev_time_series(reactiverevbal(), input$selectArea),
         options = list(opts_sizing(rescale = TRUE, width = 1.0)),
         width_svg = 9.6,
         height_svg = 5.0
@@ -211,8 +209,8 @@ server <- function(input, output, session) {
     }
   )
 
-  reactiveBenchmark <- reactive({
-    dfRevBal %>%
+  reactivebenchmark <- reactive({
+    dfrevbal %>%
       filter(
         area_name %in% c(input$selectArea, input$selectBenchLAs),
         school_phase == input$selectPhase,
@@ -223,15 +221,15 @@ server <- function(input, output, session) {
   output$colBenchmark <- snapshotPreprocessOutput(
     renderGirafe({
       girafe(
-        ggobj = plotAvgRevBenchmark(reactiveBenchmark()),
+        ggobj = plotavgrevbenchmark(reactivebenchmark()),
         options = list(opts_sizing(rescale = TRUE, width = 1.0)),
         width_svg = 5.0,
         height_svg = 5.0
       )
     }),
     function(value) {
-      # Removing elements that cause issues with shinytest comparisons when run on
-      # different environments - should add to dfeshiny at some point.
+      # Removing elements that cause issues with shinytest comparisons when run
+      # on different environments - should add to dfeshiny at some point.
       svg_removed <- gsub(
         "svg_[0-9a-z]{8}_[0-9a-z]{4}_[0-9a-z]{4}_[0-9a-z]{4}_[0-9a-z]{12}",
         "svg_random_giraph_string",
@@ -253,7 +251,7 @@ server <- function(input, output, session) {
 
   output$tabBenchmark <- renderDataTable({
     datatable(
-      reactiveBenchmark() %>%
+      reactivebenchmark() %>%
         select(
           Area = area_name,
           `Average Revenue Balance (£)` = average_revenue_balance,
@@ -270,10 +268,10 @@ server <- function(input, output, session) {
 
   output$boxavgRevBal <- renderValueBox({
     # Put value into box to plug into app
-    valueBox(
+    value_box(
       # take input number
       paste0("£", format(
-        (reactiveRevBal() %>% filter(
+        (reactiverevbal() %>% filter(
           year == max(year),
           area_name == input$selectArea,
           school_phase == input$selectPhase
@@ -287,19 +285,19 @@ server <- function(input, output, session) {
   })
 
   output$boxpcRevBal <- renderValueBox({
-    latest <- (reactiveRevBal() %>% filter(
+    latest <- (reactiverevbal() %>% filter(
       year == max(year),
       area_name == input$selectArea,
       school_phase == input$selectPhase
     ))$average_revenue_balance
-    penult <- (reactiveRevBal() %>% filter(
+    penult <- (reactiverevbal() %>% filter(
       year == max(year) - 1,
       area_name == input$selectArea,
       school_phase == input$selectPhase
     ))$average_revenue_balance
 
     # Put value into box to plug into app
-    valueBox(
+    value_box(
       # take input number
       paste0("£", format(latest - penult,
         big.mark = ","
@@ -312,10 +310,10 @@ server <- function(input, output, session) {
 
   output$boxavgRevBal_small <- renderValueBox({
     # Put value into box to plug into app
-    valueBox(
+    value_box(
       # take input number
       paste0("£", format(
-        (reactiveRevBal() %>% filter(
+        (reactiverevbal() %>% filter(
           year == max(year),
           area_name == input$selectArea,
           school_phase == input$selectPhase
@@ -330,19 +328,19 @@ server <- function(input, output, session) {
   })
 
   output$boxpcRevBal_small <- renderValueBox({
-    latest <- (reactiveRevBal() %>% filter(
+    latest <- (reactiverevbal() %>% filter(
       year == max(year),
       area_name == input$selectArea,
       school_phase == input$selectPhase
     ))$average_revenue_balance
-    penult <- (reactiveRevBal() %>% filter(
+    penult <- (reactiverevbal() %>% filter(
       year == max(year) - 1,
       area_name == input$selectArea,
       school_phase == input$selectPhase
     ))$average_revenue_balance
 
     # Put value into box to plug into app
-    valueBox(
+    value_box(
       # take input number
       paste0("£", format(latest - penult,
         big.mark = ","
@@ -356,10 +354,10 @@ server <- function(input, output, session) {
 
   output$boxavgRevBal_large <- renderValueBox({
     # Put value into box to plug into app
-    valueBox(
+    value_box(
       # take input number
       paste0("£", format(
-        (reactiveRevBal() %>% filter(
+        (reactiverevbal() %>% filter(
           year == max(year),
           area_name == input$selectArea,
           school_phase == input$selectPhase
@@ -374,19 +372,19 @@ server <- function(input, output, session) {
   })
 
   output$boxpcRevBal_large <- renderValueBox({
-    latest <- (reactiveRevBal() %>% filter(
+    latest <- (reactiverevbal() %>% filter(
       year == max(year),
       area_name == input$selectArea,
       school_phase == input$selectPhase
     ))$average_revenue_balance
-    penult <- (reactiveRevBal() %>% filter(
+    penult <- (reactiverevbal() %>% filter(
       year == max(year) - 1,
       area_name == input$selectArea,
       school_phase == input$selectPhase
     ))$average_revenue_balance
 
     # Put value into box to plug into app
-    valueBox(
+    value_box(
       # take input number
       paste0("£", format(latest - penult,
         big.mark = ","
@@ -399,7 +397,7 @@ server <- function(input, output, session) {
   })
 
   observeEvent(input$go, {
-    toggle(id = "div_a", anim = T)
+    toggle(id = "div_a", anim = TRUE)
   })
 
 
@@ -411,7 +409,7 @@ server <- function(input, output, session) {
   output$download_data <- downloadHandler(
     filename = "shiny_template_underlying_data.csv",
     content = function(file) {
-      write.csv(dfRevBal, file)
+      write.csv(dfrevbal, file)
     }
   )
 
