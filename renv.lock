@@ -42,18 +42,8 @@
     },
     "MASS": {
       "Package": "MASS",
-      "Version": "7.3-60.2",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "R",
-        "grDevices",
-        "graphics",
-        "methods",
-        "stats",
-        "utils"
-      ],
-      "Hash": "2f342c46163b0b54d7b64d1f798e2c78"
+      "Version": "7.3-61",
+      "Source": "Repository"
     },
     "Matrix": {
       "Package": "Matrix",
